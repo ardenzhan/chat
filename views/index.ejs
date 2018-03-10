@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Group Chat</title>
+  <link rel="stylesheet" href="/styles/style.css" />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/scripts/index.js"></script>
+</head>
+
+<body>
+  <div class='app-container'>
+
+    <div class='users-container'>
+      <span class='online-count-container'>
+        Online - <span class='online-count'>0</span>
+      </span>
+
+      <ul class='users-list'>
+        <!-- Users would go here -->
+      </ul>
+    </div>
+    
+    <div class='messages-container'>
+      <ul class='messages-list'>
+        <!-- Messsages would go here -->
+      </ul>
+      <form>
+        <input class='messageInput' placeholder='Send Message' />
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>
