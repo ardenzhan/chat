@@ -48,6 +48,17 @@ io.on('connection', socket => {
   })
 
 
+  // when the client emits 'typing', we broadcast it to others
+  socket.on('started typing', () => {
+    // console.log('server started typing', currentUser['name'])
+    socket.broadcast.emit('started typing', currentUser['name']);
+  });
+
+  socket.on('stopped typing', () => {
+    // console.log('server stopped typing', currentUser['name'])
+    socket.broadcast.emit('stopped typing', currentUser['name']);
+  })
+
   socket.on('disconnect', () => {
     console.log(`Disconnected client/socket ID: ${socket.id}`);
 
