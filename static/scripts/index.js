@@ -11,50 +11,50 @@ $(() => {
 
   // SUBMIT NEW MESSAGE
   $('form').submit((event) => {
-    let message = {
-      user: name,
-      content: $('.messageInput').val()
-    };
-    socket.emit('chat message', message);
-    newMessage(message)
+    let content = $('.messageInput').val()
     $('.messageInput').val('');
+    
+    socket.emit('chat message', content);
+
+    newMessage({'user': name, 'content': content})
 
     event.preventDefault();
   });
 
   // EVENT LISTENERS
-  socket.on('existing_users', (users) => {
-      for (user of users) { newUser(user); }
-  });
-
-  socket.on('existing_messages', messages => {
-      for (message of messages) { newMessage(message); }
-      $('.messages-list').append($('<li>').text('^ Previous 10 Messages ^'));
-  });
+  socket.on('existing info', existing => {
+    // existing users
+    for (user of existing['users']) { newUser(user); }
+  
+    // existing messages
+    $('.messages-list').append($('<div>').text('Will eventually be (click to show more)'))
+    for (message of existing['messages']) { newMessage(message); }
+  })
 
   socket.on('chat message', message => {
       newMessage(message);
   });
 
-  socket.on('new_user', user => {
+  socket.on('new user', user => {
       newUser(user);
+      $('.messages-list').append($('<div>').text(`${user['name']} joined the chat :)`));
   });
 
-  socket.on('disconnected_user', (socket_id) => {
+  socket.on('disconnected user', socket_id => {
       let disconnected_name = document.getElementsByClassName(socket_id)[0].innerText;
       $(`.${socket_id}`).remove();
-      $('.messages-list').append($('<li>').text(`${disconnected_name} left the chat :(`));
+      $('.messages-list').append($('<div>').text(`${disconnected_name} left the chat :(`));
       updateOnlineCount();
   })
 
   // FUNCTIONS
   function newUser(user) {
-    $('.users-list').append($('<li>').text(user.name).addClass(user.id));
+    $('.users-list').append($('<div>').text(user.name).addClass(user.id));
     updateOnlineCount();
   }
 
   function newMessage(message) {
-    $('.messages-list').append($('<li>').text(`${message['user']}: ${message['content']}`));
+    $('.messages-list').append($('<div>').text(`${message['user']}: ${message['content']}`));
   }
 
   function updateOnlineCount() {

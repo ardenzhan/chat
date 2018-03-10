@@ -18,27 +18,39 @@ var users = [];
 var messages = [];
 
 io.on('connection', socket => {
+  var currentUser = null;
+
   console.log(`Connected client/socket ID: ${socket.id}`);
 
   socket.on('new user', name => {
-    if (users.length > 0) socket.emit('existing_users', users);
-    if (messages.length > 0) socket.emit('existing_messages', messages.slice(-10));
+    // emit existing users & last 10 messages back to socket
+    let existing_info = {
+      'users': users,
+      'messages': messages.slice(-10)
+    }
+    if (users.length > 0 || messages.length > 0){
+      socket.emit('existing info', existing_info);
+    }
 
-    var new_user = {'id': socket.id, 'name': name};
+    // push currentUser into users after emitting existing users
+    currentUser = {'id': socket.id, 'name': name};
+    users.push(currentUser);
 
-    users.push(new_user);
-
-    socket.broadcast.emit('new_user', new_user);
+    // broadcast to every other socket
+    socket.broadcast.emit('new user', currentUser);
   })
 
 
-  socket.on('chat message', message => {
+  socket.on('chat message', content => {
+    message = {'user': currentUser['name'], 'content': content}
     messages.push(message);
     socket.broadcast.emit('chat message', message);
   })
 
 
   socket.on('disconnect', () => {
+    console.log(`Disconnected client/socket ID: ${socket.id}`);
+
     // Remove disconnected user from users "database"
     var index = users.findIndex((user) => {
         return user.id == socket.id;
@@ -46,8 +58,8 @@ io.on('connection', socket => {
     if (index != -1) users.splice(index, 1);
     
     // Broadcast to everyone else besides disconnected user
-    socket.broadcast.emit('disconnected_user', socket.id);
-    console.log(`Disconnected client/socket ID: ${socket.id}`);
+    if (users.length > 0) socket.broadcast.emit('disconnected user', socket.id);
+    else console.log('\nNo more connections\n')
   });
 
 });
