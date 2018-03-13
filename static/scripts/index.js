@@ -16,7 +16,8 @@ $(() => {
     
     socket.emit('chat message', content);
 
-    newMessage({'user': name, 'content': content})
+    newMessage({'user': name, 'content': content});
+    scrollDown();
     $('.messageInput').val('');
     socket.emit('stopped typing');
     
@@ -47,6 +48,14 @@ $(() => {
   }
 
   // EVENT LISTENERS
+  socket.on('existing info', existing => {
+    // existing users
+    for (user of existing['users']) { newUser(user); }
+    // existing messages (limited)
+    for (message of existing['messages']) { newMessage(message); }
+    scrollDown();
+  })
+
   socket.on('started typing', name => {
     startedTyping(name);
   })
@@ -55,28 +64,24 @@ $(() => {
     stoppedTyping(name);
   })
 
-  socket.on('existing info', existing => {
-    // existing users
-    for (user of existing['users']) { newUser(user); }
-    // existing messages (max 10)
-    for (message of existing['messages']) { newMessage(message); }
-  })
-
   socket.on('chat message', message => {
     // new chat message means that user also stopped typing
     stoppedTyping(message['user']);
     newMessage(message);
+    scrollDown();
   });
 
   socket.on('new user', user => {
     newUser(user);
     $('.messages-list').append($('<div>').text(`${user['name']} joined the chat :)`));
+    scrollDown();
   });
 
   socket.on('disconnected user', socket_id => {
     let disconnected_name = document.getElementsByClassName(socket_id)[0].innerText;
     $(`.${socket_id}`).remove();
     $('.messages-list').append($('<div>').text(`${disconnected_name} left the chat :(`));
+    scrollDown();
     updateOnlineCount();
   })
 
@@ -90,14 +95,9 @@ $(() => {
     $('.messages-list').append($('<div>').text(`${message['user']}: ${message['content']}`));
   }
 
-
-  function getUserTypingString() {
-    let usersString = ''
-    for (user of usersTyping) {
-      usersString += `${user}, `;
-    }
-    usersString = usersString.slice(0, -2);
-    return usersString;
+  function scrollDown() {
+    var element = document.getElementsByClassName('messages-list')[0];
+    element.scrollTop = element.scrollHeight;
   }
 
   function startedTyping(name) {
