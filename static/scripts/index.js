@@ -1,12 +1,20 @@
 $(() => {
-  const name = prompt('What is your name?').trim();
+  // const name = prompt('What is your name?').trim();
   const socket = io();
+  var name = '';
   
   // WHAT TO DO WHEN CONNECT
   socket.on('connect', () => {
-    socket.emit('new user', name);
+    socket.emit('new user');
+  })
+  // Initialize name and existing users+messages
+  socket.on('existing info', existing => {
+    name = existing['name'];
     newUser({'id': socket.id, 'name': name})
     updateOnlineCount();
+    for (user of existing['users']) { newUser(user); }
+    for (message of existing['messages']) { newMessage(message); }
+    scrollDown();
   })
 
   
@@ -49,11 +57,7 @@ $(() => {
   }
 
   // EVENT LISTENERS
-  socket.on('existing info', existing => {
-    for (user of existing['users']) { newUser(user); }
-    for (message of existing['messages']) { newMessage(message); }
-    scrollDown();
-  })
+  
 
   socket.on('started typing', name => {
     startedTyping(name);

@@ -15,7 +15,7 @@ app.get('/draw', (req, res) => { res.render('draw'); });
 http.listen(port, () => console.log(`Listening on port ${port}`));
 
 // SOCKET 
-
+const foods = require('./static/food-list');
 var users = [];
 var messages = [];
 
@@ -24,15 +24,20 @@ io.on('connection', socket => {
 
   console.log(`Connected client/socket ID: ${socket.id}`);
 
-  socket.on('new user', name => {
+  socket.on('new user', () => {
+    // generate random name for user
+    let name = foods[Math.floor(Math.random() * foods.length)];
+
     // emit existing users & last 30 messages back to socket
     let existing_info = {
+      'name': name,
       'users': users,
       'messages': messages.slice(-30)
     }
-    if (users.length > 0 || messages.length > 0){
-      socket.emit('existing info', existing_info);
-    }
+    socket.emit('existing info', existing_info);
+    // if (users.length > 0 || messages.length > 0){
+    //   socket.emit('existing info', existing_info);
+    // }
 
     // push currentUser into users after emitting existing users
     currentUser = {'id': socket.id, 'name': name};
@@ -59,9 +64,9 @@ io.on('connection', socket => {
   })
 
 
-  socket.on('drawing', data => {
-    socket.broadcast.emit('drawing', data);
-  })
+  // socket.on('drawing', data => {
+  //   socket.broadcast.emit('drawing', data);
+  // })
 
   
   socket.on('disconnect', () => {
