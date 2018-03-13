@@ -3,17 +3,19 @@ const app     = express();
 const path    = require('path');
 const http    = require('http').Server(app);
 const io      = require('socket.io')(http, { wsEngine: 'ws' });
-const port    = 3000;
+const port    = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, './static')));
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('index'); });
+app.get('/draw', (req, res) => { res.render('draw'); });
 
 // LISTEN
 http.listen(port, () => console.log(`Listening on port ${port}`));
 
 // SOCKET 
+
 var users = [];
 var messages = [];
 
@@ -45,6 +47,7 @@ io.on('connection', socket => {
     message = {'user': currentUser['name'], 'content': content}
     messages.push(message);
     socket.broadcast.emit('chat message', message);
+    if (messages.length > 30) messages = messages.slice(-30);
   })
 
 
@@ -53,6 +56,11 @@ io.on('connection', socket => {
   });
   socket.on('stopped typing', () => {
     socket.broadcast.emit('stopped typing', currentUser['name']);
+  })
+
+
+  socket.on('drawing', data => {
+    socket.broadcast.emit('drawing', data);
   })
 
   
@@ -67,7 +75,11 @@ io.on('connection', socket => {
     
     // Broadcast to everyone else besides disconnected user
     if (users.length > 0) socket.broadcast.emit('disconnected user', socket.id);
-    else console.log('\nNo more connections\n')
+    else {
+      console.log('\nNo more connections\n')
+      messages = [];
+    }
+    
   });
 
 });

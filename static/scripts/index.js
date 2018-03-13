@@ -9,6 +9,7 @@ $(() => {
     updateOnlineCount();
   })
 
+  
   // SUBMIT NEW MESSAGE
   $('form').submit(event => {
     let content = $('.messageInput').val()

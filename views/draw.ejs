@@ -5,43 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="/styles/index.css" />
+  <link rel="stylesheet" href="/styles/draw.css" />
   <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"
     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
     crossorigin="anonymous"></script> -->
-  <title>Chat</title>
+  <title>Draw</title>
 </head>
 
 <body>
-  <div class='container-fluid bg-dark text-light'>
-    <h2 class='display-4 border-bottom'>chat</h2>
-    
-    <div class='row'>
-      <div class='col-9 messages-container'>
-        <div class='messages-list'></div>
-        <form>
-          <input autofocus required placeholder='Send Message' 
-            class='messageInput form-control bg-dark text-light'
-          />
-        </form>
-        <div class='typing'></div>
-      </div>
+<div class='container-fluid bg-dark text-light'>
+  <h2 class='display-4 border-bottom'>draw</h2>
+  
 
-      <div class='col-3 users-container'>
-        <h6 class='online-count-container'>
-          Online <span class='online-count badge badge-secondary'>0</span>
-        </h6>
-        <div class='users-list'></div>
-      </div>
-      
-    </div>
-  </div>
+      <canvas class='whiteboard border' width='900' height='500'></canvas>
+      <!-- <div class="colors">
+        <div class="color black"></div>
+        <div class="color red"></div>
+        <div class="color green"></div>
+        <div class="color blue"></div>
+        <div class="color yellow"></div>
+      </div> -->
+
+</div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/index.js"></script>
+<script src="/scripts/draw.js"></script>
 
 </body>
 </html>
