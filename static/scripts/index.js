@@ -13,7 +13,6 @@ $(() => {
   $('form').submit(event => {
     let content = $('.messageInput').val()
     
-    
     socket.emit('chat message', content);
 
     newMessage({'user': name, 'content': content});
@@ -30,6 +29,7 @@ $(() => {
   // TYPING STATUS
   var typing = false;
   var timeout = undefined;
+  const typing_wait_time = 2000;
   var usersTyping = [];
   $('.messageInput').on('input', () => {
     updateTyping();
@@ -44,14 +44,12 @@ $(() => {
     timeout = setTimeout(() => {
       typing = false;
       socket.emit('stopped typing');
-    }, 3000);
+    }, typing_wait_time);
   }
 
   // EVENT LISTENERS
   socket.on('existing info', existing => {
-    // existing users
     for (user of existing['users']) { newUser(user); }
-    // existing messages (limited)
     for (message of existing['messages']) { newMessage(message); }
     scrollDown();
   })
@@ -73,14 +71,14 @@ $(() => {
 
   socket.on('new user', user => {
     newUser(user);
-    $('.messages-list').append($('<div>').text(`${user['name']} joined the chat :)`));
+    newMessage({'content': `${user['name']} joined`});
     scrollDown();
   });
 
   socket.on('disconnected user', socket_id => {
-    let disconnected_name = document.getElementsByClassName(socket_id)[0].innerText;
+    let disconnected_name = document.getElementsByClassName(socket_id)[0].textContent;
     $(`.${socket_id}`).remove();
-    $('.messages-list').append($('<div>').text(`${disconnected_name} left the chat :(`));
+    newMessage({'content': `${disconnected_name} left`});
     scrollDown();
     updateOnlineCount();
   })
@@ -92,7 +90,25 @@ $(() => {
   }
 
   function newMessage(message) {
-    $('.messages-list').append($('<div>').text(`${message['user']}: ${message['content']}`));
+    // if message only has content and no user, then it's a system message
+    let message_container = document.createElement('div');
+    let content = document.createElement('span');
+    content.textContent = message['content'];
+
+    if ('user' in message) {
+      let name = document.createElement('span');
+      name.className = 'font-weight-bold';
+      name.textContent = message['user'] + ' ';
+      message_container.appendChild(name);
+
+      content.className = 'font-weight-light';
+    }
+    else {
+      message_container.className = 'text-center text-muted';
+    }
+    message_container.appendChild(content);
+
+    document.getElementsByClassName('messages-list')[0].appendChild(message_container);
   }
 
   function scrollDown() {

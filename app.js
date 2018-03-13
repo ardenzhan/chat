@@ -23,10 +23,10 @@ io.on('connection', socket => {
   console.log(`Connected client/socket ID: ${socket.id}`);
 
   socket.on('new user', name => {
-    // emit existing users & last 50 messages back to socket
+    // emit existing users & last 30 messages back to socket
     let existing_info = {
       'users': users,
-      'messages': messages.slice(-50)
+      'messages': messages.slice(-30)
     }
     if (users.length > 0 || messages.length > 0){
       socket.emit('existing info', existing_info);
