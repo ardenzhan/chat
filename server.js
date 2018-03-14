@@ -25,7 +25,7 @@ io.on('connection', socket => {
   console.log(`Connected client/socket ID: ${socket.id}`);
 
   socket.on('new user', () => {
-    // generate random name for user
+    // generate random name for user, if taken then add 'jr' to the end of name
     let name = foods[Math.floor(Math.random() * foods.length)];
     let index = users.findIndex((user) => {
       return user.name == name;
@@ -33,7 +33,6 @@ io.on('connection', socket => {
     if (index != -1) {
       name = `${name} jr`
     }
-    
 
     // emit existing users & last 30 messages back to socket
     let existing_info = {
@@ -42,9 +41,6 @@ io.on('connection', socket => {
       'messages': messages.slice(-30)
     }
     socket.emit('existing info', existing_info);
-    // if (users.length > 0 || messages.length > 0){
-    //   socket.emit('existing info', existing_info);
-    // }
 
     // push currentUser into users after emitting existing users
     currentUser = {'id': socket.id, 'name': name};

@@ -172,7 +172,6 @@ $(() => {
     let index = usersTyping.findIndex((user) => {
       return user.textContent == name;
     });
-    // var index = usersTyping.indexOf(name);
     if (index != -1) usersTyping.splice(index, 1);
     appendTyping();
   }

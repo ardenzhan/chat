@@ -12,35 +12,91 @@
 
 <body>
 <div class='container-fluid bg-dark text-light'>
-  <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">Chat</span>
-  </nav>
+<nav>
+  <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active bg-dark text-light border-0" 
+    id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" 
+    aria-controls="nav-home" aria-selected="true">Chat</a>
+    <a class="nav-item nav-link bg-dark text-light border-0" 
+    id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" 
+    aria-controls="nav-profile" aria-selected="false">Profile</a>
+    <a class="nav-item nav-link bg-dark text-light border-0" 
+    id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" 
+    aria-controls="nav-about" aria-selected="false">About</a>
+  </div>
+</nav>
 
-  <div class='row'>
-    <div class='col-8 messages-container'>
-      <div class='messages-list'></div>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <!-- CHAT -->
+    <div class='row'>
+      <!-- MESSAGES -->
+      <div class='col-8 messages-container'>
+        <div class='messages-list'></div>
+  
+        <form class='message-form'>
+          <div class="input-group">
+            <span class="input-group-prepend">
+              <span class='username input-group-text bg-secondary font-weight-bold text-light'></span>
+            </span>
+            <input autofocus required placeholder='send message' 
+              class='messageInput form-control bg-dark text-light'
+            />
+          </div>
+        </form>
 
-      <form class='message-form'>
-        <div class="input-group">
-          <span class="input-group-prepend">
-            <span class='username input-group-text bg-secondary font-weight-bold text-light'></span>
-          </span>
-          <input autofocus required placeholder='Send Message' 
-            class='messageInput form-control bg-dark text-light'
-          />
-        </div>
-      </form>
-      <div id='typing' class='font-weight-light ml-1'></div>
-    </div>
-
-    <div class='col-4 users-container'>
-      <h6 class='online-count-container'>
-        Online <span class='online-count badge badge-secondary'></span>
-      </h6>
-      <div class='users-list'></div>
+        <div id='typing' class='font-weight-light ml-1'></div>
+      </div>
+  
+      <!-- USERS -->
+      <div class='col-4 users-container'>
+        <h6 class='online-count-container'>
+          users online <span class='online-count badge badge-secondary'></span>
+        </h6>
+        <div class='users-list'></div>
+      </div>
+        
     </div>
     
+  </div> 
+
+  <!-- USER INFO -->
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+    <h1>User Info</h1>
+    <form class="username-form form-inline mb-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">@</span>
+        </div>
+        <input class="form-control mr-sm-2" placeholder="change username (soon)">
+      </div>
+    </form>
   </div>
+
+  <!-- ABOUT PROJECT -->
+  <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+    <p><a href='https://ardenzhan.github.io' target="_blank">Portfolio</a></p>
+    <p><a href='https://github.com/ardenzhan/' target="_blank">GitHub</a></p>
+    <p><a href='/draw' target="_blank">DRAW (WIP)</a></p>
+    <p>arden@protonmail.ch</p>
+    <ul>Features
+      <li>temporarily holds up to 30 messages until all users leave</li>
+      <li>typing indicator with styling</li>
+      <li>randomly generated username for new connections</li>
+      <li>tracks online user count</li>
+      <li>system messages for when user leaves and enters</li>
+    </ul>
+
+    <ul>To-Do
+      <li>Implement username change</li>
+      <li>System message for when user changes name</li>
+      <li>Implement express-session for remembering names</li>
+      <li>Research socket reconnect (and errors)</li>
+      <li>Custom colors for usernames</li>
+      <li>Make tablist border smoother</li>
+    </ul>
+  </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
