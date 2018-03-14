@@ -27,6 +27,13 @@ io.on('connection', socket => {
   socket.on('new user', () => {
     // generate random name for user
     let name = foods[Math.floor(Math.random() * foods.length)];
+    let index = users.findIndex((user) => {
+      return user.name == name;
+    });
+    if (index != -1) {
+      name = `${name} jr`
+    }
+    
 
     // emit existing users & last 30 messages back to socket
     let existing_info = {
@@ -73,7 +80,7 @@ io.on('connection', socket => {
     console.log(`Disconnected client/socket ID: ${socket.id}`);
 
     // Remove disconnected user from users "database"
-    var index = users.findIndex((user) => {
+    let index = users.findIndex((user) => {
         return user.id == socket.id;
     });
     if (index != -1) users.splice(index, 1);

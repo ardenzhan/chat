@@ -10,6 +10,7 @@ $(() => {
   // Initialize name and existing users+messages
   socket.on('existing info', existing => {
     name = existing['name'];
+    updateName(name);
     newUser({'id': socket.id, 'name': name})
     updateOnlineCount();
     for (user of existing['users']) { newUser(user); }
@@ -17,9 +18,12 @@ $(() => {
     scrollDown();
   })
 
-  
+  function updateName(name) {
+    document.getElementsByClassName('username')[0].textContent = name;
+  }
+
   // SUBMIT NEW MESSAGE
-  $('form').submit(event => {
+  $('.message-form').submit(event => {
     let content = $('.messageInput').val()
     
     socket.emit('chat message', content);
@@ -38,7 +42,7 @@ $(() => {
   // TYPING STATUS
   var typing = false;
   var timeout = undefined;
-  const typing_wait_time = 2000;
+  const typing_wait_time = 3000;
   var usersTyping = [];
   $('.messageInput').on('input', () => {
     updateTyping();
@@ -121,17 +125,56 @@ $(() => {
     element.scrollTop = element.scrollHeight;
   }
 
+  function appendTyping() {
+    let typing = document.getElementById('typing');
+    typing.innerHTML = ''
+
+    switch (usersTyping.length) {
+      case 0:
+        break;
+
+      case 1:
+        typing.appendChild(usersTyping[0]);
+        typing.innerHTML += ' is typing...';
+        break;
+
+      case 2:
+        typing.appendChild(usersTyping[0]);
+        typing.innerHTML += ' and ';
+        typing.appendChild(usersTyping[1]);
+        typing.innerHTML += ' are typing...';
+        break;
+      
+      case 3:
+        typing.appendChild(usersTyping[0]);
+        typing.innerHTML += ', '
+        typing.appendChild(usersTyping[1]);
+        typing.innerHTML += ', and ';
+        typing.appendChild(usersTyping[2]);
+        typing.innerHTML += ' are typing...';
+        break;
+
+      default:
+        typing.innerHTML += 'Several users are typing...';
+        break;
+    }
+  }
+
   function startedTyping(name) {
-    usersTyping.push(name);
-    $('.typing').text('Typing: ' + usersTyping.join(', '));
+    let user = document.createElement('span');
+    user.className = 'font-weight-bold';
+    user.textContent = name;
+    usersTyping.push(user);
+    appendTyping();
   }
 
   function stoppedTyping(name) {
-    var index = usersTyping.indexOf(name);
+    let index = usersTyping.findIndex((user) => {
+      return user.textContent == name;
+    });
+    // var index = usersTyping.indexOf(name);
     if (index != -1) usersTyping.splice(index, 1);
-
-    if (usersTyping.length > 0) $('.typing').text('Typing: ' + usersTyping.join(', '));
-    else $('.typing').text('');
+    appendTyping();
   }
 
   function updateOnlineCount() {
