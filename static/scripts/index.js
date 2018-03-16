@@ -26,11 +26,13 @@ $(() => {
   $('.username-form').submit(event => {
     let newName = $('.nameInput').val().trim();
     // need to validate if duplicate or same name
-
+    $('.alert').alert('close');
     socket.emit('updated name', newName);
 
     changeName(newName);
     $('.nameInput').val('');
+
+    
 
     event.preventDefault();
   });
