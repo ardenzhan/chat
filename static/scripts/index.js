@@ -10,7 +10,7 @@ $(() => {
   // Initialize name and existing users+messages
   socket.on('existing info', existing => {
     name = existing['name'];
-    updateName(name);
+    updateMessageLabelName(name);
     newUser({'id': socket.id, 'name': name})
     updateOnlineCount();
     for (user of existing['users']) { newUser(user); }
@@ -18,8 +18,8 @@ $(() => {
     scrollDown();
   })
 
-  function updateName(name) {
-    document.getElementsByClassName('username')[0].textContent = name;
+  function updateMessageLabelName(name) {
+    document.getElementsByClassName('labelname')[0].textContent = name;
   }
 
   // SUBMIT NEW MESSAGE
@@ -61,8 +61,6 @@ $(() => {
   }
 
   // EVENT LISTENERS
-  
-
   socket.on('started typing', name => {
     startedTyping(name);
   })
@@ -171,9 +169,7 @@ $(() => {
   }
 
   function stoppedTyping(name) {
-    let index = usersTyping.findIndex((user) => {
-      return user.textContent == name;
-    });
+    let index = usersTyping.findIndex(user => user.textContent == name);
     if (index != -1) usersTyping.splice(index, 1);
     appendTyping();
   }

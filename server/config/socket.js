@@ -10,9 +10,7 @@ function getRandomName() {
 }
 
 function checkNameExist(name) {
-  let index = users.findIndex(user => {
-    return user.name == name;
-  })
+  let index = users.findIndex(user => user.name == name)
   if (index == -1) return false;
   else return true;
 }
@@ -26,7 +24,7 @@ module.exports = io => {
   
       // emit existing users & last 30 messages back to socket
       let existing_info = {
-        'name': currentUser['name'],
+        'name': currentUser.name,
         'users': users,
         'messages': messages.slice(-30)
       }
@@ -41,7 +39,7 @@ module.exports = io => {
   
   
     socket.on('chat message', content => {
-      message = {'user': currentUser['name'], 'content': content}
+      message = {'user': currentUser.name, 'content': content}
       messages.push(message);
       socket.broadcast.emit('chat message', message);
       if (messages.length > 30) messages = messages.slice(-30);
@@ -49,10 +47,10 @@ module.exports = io => {
   
   
     socket.on('started typing', () => {
-      socket.broadcast.emit('started typing', currentUser['name']);
+      socket.broadcast.emit('started typing', currentUser.name);
     });
     socket.on('stopped typing', () => {
-      socket.broadcast.emit('stopped typing', currentUser['name']);
+      socket.broadcast.emit('stopped typing', currentUser.name);
     })
   
   
@@ -65,13 +63,11 @@ module.exports = io => {
       console.log('Disconnected:', currentUser);
   
       // Remove disconnected user from users "database"
-      let index = users.findIndex((user) => {
-          return user.id == currentUser['id'];
-      });
+      let index = users.findIndex((user) => user.id == currentUser.id);
       if (index != -1) users.splice(index, 1);
       
-      // Broadcast to everyone else besides disconnected user
-      if (users.length > 0) socket.broadcast.emit('disconnected user', currentUser['id']);
+      // Broadcast disconnected user, or clear messages if no more users
+      if (users.length > 0) socket.broadcast.emit('disconnected user', currentUser.id);
       else {
         console.log('\nNo more connections\n')
         messages = [];
