@@ -1,15 +1,11 @@
-var foods = require('../../static/food-list').slice();
+var foods = require('./food-list').slice();
 var users = [];
 var messages = [];
 
 function getRandomName() {
-  if (!foods.length) foods = require('../../static/food-list').slice();
+  if (!foods.length) { foods = require('./food-list').slice(); }
   let name = foods.splice(Math.floor(Math.random() * foods.length), 1)[0];
-  
-  if (checkNameExist(name)) {
-    name = `${name} jr`;
-  }
-
+  while (checkNameExist(name)) { name += ' jr'; }
   return name;
 }
 
@@ -24,7 +20,7 @@ function checkNameExist(name) {
 module.exports = io => {
   io.on('connection', socket => {
     let currentUser = {'id': socket.id, 'name': getRandomName()};
-    console.log('New Socket Connection:', currentUser);
+    console.log('Connected:', currentUser);
   
     socket.on('new user', () => {
   
@@ -66,16 +62,16 @@ module.exports = io => {
   
     
     socket.on('disconnect', () => {
-      console.log(`Disconnected client/socket ID: ${socket.id}`);
+      console.log('Disconnected:', currentUser);
   
       // Remove disconnected user from users "database"
       let index = users.findIndex((user) => {
-          return user.id == socket.id;
+          return user.id == currentUser['id'];
       });
       if (index != -1) users.splice(index, 1);
       
       // Broadcast to everyone else besides disconnected user
-      if (users.length > 0) socket.broadcast.emit('disconnected user', socket.id);
+      if (users.length > 0) socket.broadcast.emit('disconnected user', currentUser['id']);
       else {
         console.log('\nNo more connections\n')
         messages = [];

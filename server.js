@@ -11,11 +11,6 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('index'); });
 app.get('/draw', (req, res) => { res.render('draw'); });
 
-// LISTEN
 http.listen(port, () => console.log(`Listening on port ${port}`));
-
-// SOCKET
-
-
 
 require('./server/config/socket')(io);

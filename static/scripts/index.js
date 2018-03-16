@@ -85,7 +85,9 @@ $(() => {
   });
 
   socket.on('disconnected user', socket_id => {
+    // remove from typing list, remove from online list, send system message
     let disconnected_name = document.getElementsByClassName(socket_id)[0].textContent;
+    stoppedTyping(disconnected_name);
     $(`.${socket_id}`).remove();
     newMessage({'content': `${disconnected_name} left`});
     scrollDown();
@@ -155,7 +157,7 @@ $(() => {
         break;
 
       default:
-        typing.innerHTML += 'Several users are typing...';
+        typing.innerHTML = 'Several users are typing...';
         break;
     }
   }
