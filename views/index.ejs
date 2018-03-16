@@ -32,14 +32,29 @@
     <div class='row'>
       <!-- MESSAGES -->
       <div class='col-8 messages-container'>
-        <div class='messages-list'></div>
+        <div class='messages-list'>
+          <div class="alert alert-dark alert-dismissible fade show" role="alert">
+            Welcome <span class='labelname font-weight-bold'></span>!
+            If your name already exists, then other users will see your name with a JR at the end.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <hr>
+            <form class="input-group username-form">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+              </div>
+              <input type="text" maxlength="32" required class="form-control nameInput" placeholder="change username" aria-label="Username" aria-describedby="basic-addon1">
+            </form>
+          </div>
+        </div>
   
         <form class='message-form'>
           <div class="input-group">
             <span class="input-group-prepend">
               <span class='labelname input-group-text bg-secondary font-weight-bold text-light'></span>
             </span>
-            <input autofocus required placeholder='send message' 
+            <input type="text" autofocus required placeholder='send message' 
               class='messageInput form-control bg-dark text-light'
             />
           </div>
@@ -63,14 +78,14 @@
   <!-- USER INFO -->
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
     <h1>User Info</h1>
-    <form class="username-form form-inline mb-3">
+    <!-- <form class="username-form form-inline mb-3">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text">@</span>
         </div>
-        <input class="form-control mr-sm-2" placeholder="change username (soon)">
+        <input class="nameInput form-control mr-sm-2" placeholder="change username (soon)">
       </div>
-    </form>
+    </form> -->
   </div>
 
   <!-- ABOUT PROJECT -->
@@ -79,12 +94,13 @@
       <li>Temporarily holds up to 30 messages until all users leave</li>
       <li>Typing indicator for when other users are typing</li>
       <li>Randomly generated username for new connections</li>
+      <li>Change username</li> 
       <li>Tracks online user count</li>
       <li>System messages for when user leaves and enters</li>
     </ul>
 
     <ul>To-Do
-      <li>Implement username change</li>
+      <li>Implement username change validation if choosing existing or same name</li>
       <li>System message for when user changes name</li>
       <li>Implement express-session for remembering names</li>
       <li>Research socket reconnect (and errors)</li>

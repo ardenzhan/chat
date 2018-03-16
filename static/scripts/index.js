@@ -1,5 +1,4 @@
 $(() => {
-  // const name = prompt('What is your name?').trim();
   const socket = io();
   var name = '';
   
@@ -19,12 +18,32 @@ $(() => {
   })
 
   function updateMessageLabelName(name) {
-    document.getElementsByClassName('labelname')[0].textContent = name;
+    // document.getElementsByClassName('labelname')[0].textContent = name;
+    $('.labelname').text(name);
+  }
+
+  // SUBMIT NEW USERNAME
+  $('.username-form').submit(event => {
+    let newName = $('.nameInput').val().trim();
+    // need to validate if duplicate or same name
+
+    socket.emit('updated name', newName);
+
+    changeName(newName);
+    $('.nameInput').val('');
+
+    event.preventDefault();
+  });
+
+  function changeName(newName){
+    name = newName;
+    updateMessageLabelName(name);
+    $(`.${socket.id}`).text(name);
   }
 
   // SUBMIT NEW MESSAGE
   $('.message-form').submit(event => {
-    let content = $('.messageInput').val()
+    let content = $('.messageInput').val();
     
     socket.emit('chat message', content);
 
@@ -40,10 +59,11 @@ $(() => {
   });
 
   // TYPING STATUS
+  var usersTyping = [];
   var typing = false;
   var timeout = undefined;
   const typing_wait_time = 3000;
-  var usersTyping = [];
+  
   $('.messageInput').on('input', () => {
     updateTyping();
   });
@@ -81,6 +101,12 @@ $(() => {
     newMessage({'content': `${user['name']} joined`});
     scrollDown();
   });
+
+  socket.on('updated name', user => {
+    let oldName = $(`.${user.id}`).text();
+    newMessage({'content': `${oldName} changed name to ${user.name}`});
+    $(`.${user.id}`).text(user.name);
+  })
 
   socket.on('disconnected user', socket_id => {
     // remove from typing list, remove from online list, send system message

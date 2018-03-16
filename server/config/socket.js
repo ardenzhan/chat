@@ -36,6 +36,12 @@ module.exports = io => {
       // broadcast to every other socket
       socket.broadcast.emit('new user', currentUser);
     })
+
+    socket.on('updated name', newName => {
+      while (checkNameExist(newName)) { newName += ' jr'; }
+      currentUser.name = newName;
+      socket.broadcast.emit('updated name', currentUser);
+    })
   
   
     socket.on('chat message', content => {
