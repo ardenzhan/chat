@@ -34,7 +34,7 @@
       <div class='col-8 messages-container'>
         <div class='messages-list'>
           <div class="alert alert-dark alert-dismissible fade show" role="alert">
-            Welcome, your username has been randomly assigned as <span class='labelname font-weight-bold'></span>!
+            <div class='alert-message'>Welcome, your username has been randomly assigned as <span class='labelname font-weight-bold'></span>!</div>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -94,18 +94,18 @@
       <li>Temporarily holds up to 30 messages until all users leave</li>
       <li>Typing indicator for when other users are typing</li>
       <li>Randomly generated username for new connections</li>
-      <li>Change username</li> 
-      <li>Tracks online user count</li>
-      <li>System messages for when user leaves and enters</li>
+      <li>Change username with validation against existing usernames</li> 
+      <li>Track online user count</li>
+      <li>System messages for when user joins/leaves, user changes name</li>
     </ul>
 
     <ul>To-Do
-      <li>Implement username change validation if choosing existing or same name</li>
-      <li>System message for when user changes name</li>
+      <li>Optimize scripts</li>
       <li>Implement express-session for remembering names</li>
-      <li>Research socket reconnect (and errors)</li>
+      <li>Socket reconnect and connection errors</li>
+      <li>RTC video chat</li>
       <li>Custom colors for usernames</li>
-      <li>Make tablist border smoother</li>
+      <li>Make tab-list border smoother</li>
     </ul>
 
     <p><a href='https://ardenzhan.github.io' target="_blank">Portfolio</a></p>

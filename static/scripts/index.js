@@ -23,18 +23,23 @@ $(() => {
   }
 
   // SUBMIT NEW USERNAME
+  var newName = ''
   $('.username-form').submit(event => {
-    let newName = $('.nameInput').val().trim();
-    // need to validate if duplicate or same name
-    $('.alert').alert('close');
-    socket.emit('updated name', newName);
-
-    changeName(newName);
+    newName = $('.nameInput').val().trim();
     $('.nameInput').val('');
-
-    
-
+    socket.emit('if new name exist', newName);
     event.preventDefault();
+  });
+
+  socket.on('if new name exist', exist => {
+    if (exist) {
+      $('.alert-message').html(`<span class='font-weight-bold'>${newName}</span> already exists, please try another name`);
+    }
+    else {
+      changeName(newName);
+      $('.alert-message').html(`Your new name is now <span class='font-weight-bold'>${newName}</span>!`);
+      socket.emit('updated name', newName);
+    }
   });
 
   function changeName(newName){
@@ -59,6 +64,7 @@ $(() => {
 
     event.preventDefault();
   });
+  
 
   // TYPING STATUS
   var usersTyping = [];

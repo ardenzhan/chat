@@ -37,6 +37,10 @@ module.exports = io => {
       socket.broadcast.emit('new user', currentUser);
     })
 
+    socket.on('if new name exist', newName => {
+      socket.emit('if new name exist', checkNameExist(newName));
+    })
+
     socket.on('updated name', newName => {
       while (checkNameExist(newName)) { newName += ' jr'; }
       currentUser.name = newName;
