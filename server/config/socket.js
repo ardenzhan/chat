@@ -20,33 +20,33 @@ module.exports = io => {
     let currentUser = {'id': socket.id, 'name': getRandomName()};
     console.log('Connected:', currentUser);
   
+    /*
+     * Emit existing users & last 30 messages back to socket
+     * Push currentUser into users after emitting existing users
+     * Broadcast the currentUser to every other socket
+     */
     socket.on('new user', () => {
-  
-      // emit existing users & last 30 messages back to socket
-      let existing_info = {
+      let info = {
         'name': currentUser.name,
         'users': users,
         'messages': messages.slice(-30)
       }
-      socket.emit('existing info', existing_info);
+      socket.emit('initialize info', info);
   
-      // push currentUser into users after emitting existing users
       users.push(currentUser);
-  
-      // broadcast to every other socket
+
       socket.broadcast.emit('new user', currentUser);
     })
 
-    socket.on('if new name exist', newName => {
-      socket.emit('if new name exist', checkNameExist(newName));
+    socket.on('check name', newName => {
+      let exist = checkNameExist(newName);
+      socket.emit('checked name', {'name': newName, 'exist': exist});
+      if (!exist) {
+        console.log(currentUser, `changed name to ${newName}`);
+        currentUser.name = newName;
+        socket.broadcast.emit('updated name', currentUser);
+      }
     })
-
-    socket.on('updated name', newName => {
-      while (checkNameExist(newName)) { newName += ' jr'; }
-      currentUser.name = newName;
-      socket.broadcast.emit('updated name', currentUser);
-    })
-  
   
     socket.on('chat message', content => {
       message = {'user': currentUser.name, 'content': content}
