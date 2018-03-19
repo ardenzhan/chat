@@ -31,6 +31,9 @@ document.getElementsByClassName('username-form')[0].onsubmit = event => {
   let newName = nameInput.value.trim();
   nameInput.value = '';
   
+  socket.emit('stopped typing');
+  typing = false;
+  clearTimeout(timeout);
   socket.emit('check name', newName);
   event.preventDefault();
 }
@@ -70,7 +73,6 @@ document.getElementsByClassName('message-form')[0].onsubmit = event => {
 
   messageInput.value = '';
   socket.emit('stopped typing');
-  
   typing = false;
   clearTimeout(timeout);
 
