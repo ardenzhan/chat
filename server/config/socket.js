@@ -42,7 +42,7 @@ module.exports = io => {
       let exist = checkNameExist(newName);
       socket.emit('checked name', {'name': newName, 'exist': exist});
       if (!exist) {
-        console.log(currentUser, `changed name to ${newName}`);
+        console.log(currentUser, `-> ${newName}`);
         currentUser.name = newName;
         socket.broadcast.emit('updated name', currentUser);
       }
