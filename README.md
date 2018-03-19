@@ -1,2 +1,2 @@
-# Chat
-[chat](https://chat-pewxchfnnq.now.sh)
+# [Chat](https://chat-pewxchfnnq.now.sh)
+Built with node.js, socket.io
