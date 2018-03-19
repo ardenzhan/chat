@@ -1,2 +1,2 @@
-# Chat and Draw
-App for chatting and drawing using socket.io
+# Chat
+[chat](https://chat-pewxchfnnq.now.sh)
