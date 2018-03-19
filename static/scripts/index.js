@@ -118,24 +118,30 @@ socket.on('new user', user => {
 });
 
 socket.on('updated name', user => {
-  let oldName = $(`.${user.id}`).text();
-  newMessage({'content': `${oldName} changed name to ${user.name}`});
-  $(`.${user.id}`).text(user.name);
+  let oldName = document.getElementsByClassName(`${user.id}`)[0];
+  newMessage({'content': `${oldName.textContent} changed name to ${user.name}`});
+  oldName.textContent = user.name;
 })
 
 socket.on('disconnected user', socket_id => {
   // remove from typing list, remove from online list, send system message
-  let disconnected_name = document.getElementsByClassName(socket_id)[0].textContent;
-  stoppedTyping(disconnected_name);
-  $(`.${socket_id}`).remove();
-  newMessage({'content': `${disconnected_name} left`});
+  let disconnected_name = document.getElementsByClassName(socket_id)[0];
+  stoppedTyping(disconnected_name.textContent);
+  
+  newMessage({'content': `${disconnected_name.textContent} left`});
   scrollDown();
+
+  disconnected_name.remove();
   updateOnlineCount();
 })
 
 // FUNCTIONS
 function newUser(user) {
-  $('.users-list').append($('<div>').text(user.name).addClass(user.id));
+  let users_list = document.getElementsByClassName('users-list')[0];
+  let user_element = document.createElement('div');
+  user_element.className = user.id;
+  user_element.textContent = user.name;
+  users_list.appendChild(user_element);
   updateOnlineCount();
 }
 
