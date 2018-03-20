@@ -1,8 +1,93 @@
+<!DOCTYPE html>
+<html lang='en'>
 <head> 
-  <meta http-equiv="expires" content="0">
-  <meta http-equiv="refresh" content="0; URL=https://chat-dnrcjpqtrz.now.sh" />
+<title>Chat</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="refresh" content="0; URL=https://chat-dnrcjpqtrz.now.sh" />
+<style>
+  * {
+    background: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", 'Helvetica', 'Arial', 'sans-serif';
+  }
+
+  .stuck, a {
+    margin-top: 30vh;
+    color: #bdbdbd;
+    text-align: center;
+  }
+
+  .loading-text {
+    color: #bdbdbd;
+    text-align: center;
+  }
+
+  .spinner {
+    margin: 20vh auto 2vh auto;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    text-align: center;
+    
+    -webkit-animation: sk-rotate 2.0s infinite linear;
+    animation: sk-rotate 2.0s infinite linear;
+  }
+
+  .dot1, .dot2 {
+    width: 60%;
+    height: 60%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    background-color: #bdbdbd;
+    border-radius: 100%;
+    
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+  }
+
+  .dot2 {
+    top: auto;
+    bottom: 0;
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+
+  @-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+  @keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+  @-webkit-keyframes sk-bounce {
+    0%, 100% { -webkit-transform: scale(0.0) }
+    50% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bounce {
+    0%, 100% { 
+      transform: scale(0.0);
+      -webkit-transform: scale(0.0);
+    } 50% { 
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
+  }
+
+</style>
 </head>
 <body>
-  <h1>Redirecting...</h1>
+
+<div class="spinner">
+  <div class="dot1"></div>
+  <div class="dot2"></div>
+</div>
+<div class='loading-text'>
+  <h1>LOADING...</h1> 
+</div>
+<div class='stuck'>
   <a href='https://chat-dnrcjpqtrz.now.sh'>Please click here if not redirected</a>
+</div>
+  
 </body>
+</html>
